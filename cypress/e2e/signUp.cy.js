@@ -29,7 +29,7 @@ describe('Sign Up page', () => {
     homePage.assertHeaderContainUsername(user.username);
   });
 
-  it('should...invalid email', () => {
+  it('should show validation error for invalid email format', () => {
     const { username, password } = user;
 
     signUpPage.typeUserName(username);
@@ -40,7 +40,7 @@ describe('Sign Up page', () => {
     signUpPage.errorIsInvalidEmail();
   });
 
-  it('should...invalid password', () => {
+  it('should show validation error for invalid password', () => {
     const { email, username } = user;
 
     signUpPage.typeUserName(username);
@@ -59,8 +59,8 @@ describe('Sign Up page', () => {
       signUpPage.typeEmail(email);
       signUpPage.typePassword(password);
       signUpPage.clickSignUpBtn();
-    });
 
-    signUpPage.errorEmailIsTaken();
+      signUpPage.errorEmailIsTaken();
+    });
   });
 });
