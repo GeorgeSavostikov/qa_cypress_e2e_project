@@ -20,12 +20,10 @@ class SignInPageObject extends PageObject {
   }
 
   typeEmail(email) {
-    this.emailField.type(email);
     this.emailField.clear().type(email);
   }
 
   typePassword(password) {
-    this.passwordField.type(password);
     this.passwordField.clear().type(password);
   }
 
@@ -33,8 +31,9 @@ class SignInPageObject extends PageObject {
     this.signInBtn.click();
   }
 
-  errorEmailOrPasswordIsInvalide() {
+  errorEmailOrPasswordIsInvalid() {
     this.errorMessage.should('contain', 'Login failed!');
+
     cy.get('.swal-button').should('contain', 'OK').click();
   }
 }

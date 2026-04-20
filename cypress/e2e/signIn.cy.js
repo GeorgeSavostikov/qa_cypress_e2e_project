@@ -35,12 +35,12 @@ describe('Sign In page', () => {
     signInPage.typePassword(user.password);
     signInPage.clickSignInBtn();
 
-    signInPage.errorEmailOrPasswordIsInvalide();
+    signInPage.errorEmailOrPasswordIsInvalid();
 
     signInPage.typeEmail(user.email);
     signInPage.typePassword('a' + user.password);
     signInPage.clickSignInBtn();
 
-    signInPage.errorEmailOrPasswordIsInvalide();
+    signInPage.errorEmailOrPasswordIsInvalid();
   });
 });
