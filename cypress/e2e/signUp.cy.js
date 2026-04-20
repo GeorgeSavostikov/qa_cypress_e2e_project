@@ -15,9 +15,9 @@ describe('Sign Up page', () => {
 
     cy.task('generateUser').then((generateUser) => {
       user = generateUser;
+    }).then(() => {
+      signUpPage.visit();
     });
-
-    signUpPage.visit();
   });
 
   it('should successfully sign up with valid credentials', () => {

@@ -8,18 +8,16 @@ const settingsPage = new SettingsPageObject();
 describe('Settings page', () => {
   let user;
 
-  before(() => {
-    cy.task('generateUser').then((generateUser) => {
-      user = generateUser;
-    });
-  });
-
   beforeEach(() => {
     cy.task('db:clear');
 
-    cy.login();
+    cy.task('generateUser').then((generateUser) => {
+      user = generateUser;
+    });
 
-    settingsPage.visit();
+    cy.login().then(() => {
+      settingsPage.visit();
+    });
   });
 
   it('should provide an ability to update username', () => {

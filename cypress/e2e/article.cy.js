@@ -11,16 +11,16 @@ describe('Article', () => {
   beforeEach(() => {
     cy.task('db:clear');
 
-    cy.task('generateArticle').then((createdArticle) => {
-      article = createdArticle;
-    });
-
     cy.task('generateUser').then((createdUser) => {
       const { username, email, password } = createdUser;
 
       cy.login(email, username, password);
-
+    }).then(() => {
       editorPage.visit();
+    });
+
+    cy.task('generateArticle').then((createdArticle) => {
+      article = createdArticle;
     });
   });
 

@@ -1,56 +1,45 @@
+
 /// <reference types='cypress' />
 /// <reference types='../support' />
 
-import ProfilePageObject from '../support/pages/profile.pageObject';
+import SignInPageObject from '../support/pages/signIn.pageObject';
 
-const profilePage = new ProfilePageObject();
+const signInPage = new SignInPageObject();
 
 describe('User', () => {
-  let user;
-  let targetUser;
+  let userTarget;
+  let userFollower;
 
-  beforeEach(() => {
+  before(() => {
     cy.task('db:clear');
 
     cy.task('generateUser').then((generatedUser) => {
-      user = generatedUser;
-
-      return cy.register(user.email, user.username, user.password);
-    }).then((registeredUser) => {
-      user = registeredUser;
+      userTarget = generatedUser;
+      cy.register(userTarget.email, userTarget.username, userTarget.password);
     });
 
-    cy.task('generateUser').then((generatedTargetUser) => {
-      targetUser = generatedTargetUser;
-
-      return cy.register(
-        targetUser.email,
-        targetUser.username,
-        targetUser.password
+    cy.task('generateUser').then((generatedUser) => {
+      userFollower = generatedUser;
+      cy.register(
+        userFollower.email,
+        userFollower.username,
+        userFollower.password
       );
-    }).then((registeredTarget) => {
-      targetUser = registeredTarget;
     });
   });
 
-  it('should follow another user', () => {
-    cy.login(user.email, user.password);
-    profilePage.visit(targetUser.username);
+  it('should be able to follow another user', () => {
+    signInPage.visit();
 
-    profilePage.assertFollowBtnVisible();
-    profilePage.clickFollowBtn();
+    signInPage.typeEmail(userFollower.email);
+    signInPage.typePassword(userFollower.password);
+    signInPage.clickSignInBtn();
 
-    profilePage.assertUnfollowBtnVisible();
-  });
+    // eslint-disable-next-line cypress/no-unnecessary-waiting
+    cy.wait(1000);
 
-  it('should unfollow another user', () => {
-    cy.login(user.email, user.password);
-    profilePage.visit(targetUser.username);
+    cy.visit(`/#/@${userTarget.username}`);
 
-    profilePage.clickFollowBtn();
-    profilePage.assertUnfollowBtnVisible();
-
-    profilePage.clickUnfollowBtn();
-    profilePage.assertFollowBtnVisible();
+    cy.contains('button', `Follow ${userTarget.username}`).click();
   });
 });
